@@ -1,0 +1,85 @@
+<!doctype html>
+<html>
+<head>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>  
+</head>
+<body>
+<canvas id="myCanvas" width="400" height="300"></canvas> 
+<button id="addBall" value="add" onclick="addBall()">add</button>
+<script type="text/javascript">
+       var ml = 1;
+       var w = 20;
+       var h = 20;
+       var cw = 400;
+       var ch = 300;
+       var canvas;
+       var context;
+       var rect = new Rect(100, 100, "rgb(255, 100, 255)");
+       var rectArray = new Array(rect);
+function init(){
+  canvas = document.getElementById('myCanvas');
+  context = canvas.getContext("2d");
+  setInterval(update, 10);
+}
+
+function update(){
+  context.strokeRect(0, 0, 400, 300);
+  context.clearRect(1,1,398,298);
+  for (i = 0; i < rectArray.length; i++){
+      rectArray[i].draw();
+      rectArray[i].move();   
+  }
+}
+function Rect(x, y, color){
+  this.x = x;
+  this.y = y;
+  this.color = color; 
+    this.mx = 0;
+    this.my = 0;                                              
+}
+Rect.prototype.draw = function(){
+  context.fillRect(this.x, this.y, 20, 20);
+  context.fillStyle = this.color;
+}
+
+Rect.prototype.move = function(){ 
+
+           if (this.mx == 0) {
+               this.x = this.x + ml;
+               if (this.x >= cw-w) {
+                   this.mx = 1;
+               }
+           }
+           else {
+               this.x = this.x - ml;
+               if (this.x <= 0) {
+                   this.mx = 0;
+               }
+           }
+           if (this.my == 0) {
+               this.y = this.y + ml;
+               if (this.y >= ch-h) {
+                   this.my = 1;
+               }
+           }
+           else {
+               this.y = this.y - ml;
+               if (this.y <= 0) {
+                   this.my = 0;
+               }
+           } 
+       }
+function addBall(){
+  var color = 'rgb(' + parseInt(Math.random() * 255) + ', ' +
+    parseInt(Math.random() * 255) + ', ' +
+    parseInt(Math.random() * 255) + ')';
+  var x = Math.random() * 400;
+  var y = Math.random() * 300;
+  var rect = new Rect(x, y, color);
+  rectArray.push(rect);
+}
+window.onload = init();
+
+</script>
+</body>
+</html>
